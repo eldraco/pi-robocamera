@@ -33,7 +33,7 @@ def set_angle(angle, direction='base'):
     Set the angle on servo X
     direction can be 'horizontal' or 'vertical'
     """
-    duty = angle / 18 + 2
+    duty = int(angle) / 18 + 2
     if direction == 'horizontal':
         # Move servo horizontal
         GPIO.output(SERVO_HORIZ_IO, True)
