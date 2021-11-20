@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # Pi-camera-robot
 # Author: eldraco@gmail.com
+import RPi.GPIO as GPIO
+from time import sleep
+import argparse
 
 def init_rpi():
     """
