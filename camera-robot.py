@@ -56,6 +56,7 @@ if __name__ == '__main__':
     print('Pi-camera-robot.')
 
     # Parse the parameters
+    parser = ArgumentParser()
     parser.add_argument('-v', '--verbose',metavar='<verbositylevel>',action='store', required=False, type=int, help='amount of verbosity. This shows more info about the results.')
 
     args = parser.parse_args()
@@ -66,4 +67,4 @@ if __name__ == '__main__':
     for angle in range(0,100,10):
         set_angle('horizontal', angle) 
 
-    stop_rpi()
+    s0top_rpi()
