@@ -56,7 +56,7 @@ if __name__ == '__main__':
     print('Pi-camera-robot.')
 
     # Parse the parameters
-    parser = ArgumentParser()
+    parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose',metavar='<verbositylevel>',action='store', required=False, type=int, help='amount of verbosity. This shows more info about the results.')
 
     args = parser.parse_args()
