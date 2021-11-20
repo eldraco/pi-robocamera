@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import network
 import os
 import RPi.GPIO as GPIO
