@@ -2,52 +2,43 @@
 # Pi-camera-robot
 # Author: eldraco@gmail.com
 
-import RPi.GPIO as GPIO
-from time import sleep
-import argparse
-
-SERVO_HORIZ_IO = 3
-SERVO2_VERT_IO = 5
-
 def init_rpi():
     """
     Initialize the rpi io
     """
     # this sets the names to board mode, which just names the pins according to the numbers in the middle of the diagram above.
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(3, GPIO.OUT)
-    # Now setup PWM on pin #3 at 50Hz
-    pwm = GPIO.PWM(3, 50)
-    #Then start it with 0 duty cycle so it doesn't set any angles on startup
-    pwm.start(0)
 
 def stop_rpi():
     """
     Stop the rpi
     """
-    pwm.stop()
     GPIO.cleanup()
 
-def set_angle(angle, direction='base'):
+class Servo():
     """
-    Set the angle on servo X
-    direction can be 'horizontal' or 'vertical'
+    A Class to deal with a servo
     """
-    duty = int(angle) / 18 + 2
-    if direction == 'horizontal':
-        # Move servo horizontal
-        GPIO.output(SERVO_HORIZ_IO, True)
-        pwm.ChangeDutyCycle(duty)
-        sleep(1)
-        GPIO.output(SERVO_HORIZ_IO, False)
-        pwm.ChangeDutyCycle(0)
-    elif direction == 'vertical':
-        GPIO.output(SERVO2_VERT_IO, True)
-        pwm.ChangeDutyCycle(duty)
-        sleep(1)
-        GPIO.output(SERVO2_VERT_IO, False)
-        pwm.ChangeDutyCycle(0)
 
+    def __init__(self, gpio):
+        self.io_pin = gpio
+        GPIO.setup(self.io_pin, GPIO.OUT)
+        self.pwm = GPIO.PWM(self.io_pin, 50)
+        self.pwm.start(0)
+
+    def stop(self):
+        self.pwm.stop()
+
+    def set_angle(self, angle):
+        """
+        Set the angle on servo
+        """
+        duty = int(angle) / 18 + 2
+        GPIO.output(self.io_pin, True)
+        self.pwm.ChangeDutyCycle(duty)
+        sleep(0.5)
+        GPIO.output(self.io_pin, False)
+        self.pwm.ChangeDutyCycle(0)
 
 ####################
 # Main
@@ -63,8 +54,14 @@ if __name__ == '__main__':
 
     init_rpi()
 
-    # Move servo 1
-    for angle in range(0,100,10):
-        set_angle('horizontal', angle) 
+    # Servo horisontal
+    servo_horiz = Servo(3)
+    # Servo Vertical
+    servo_vert = Servo(5)
 
-    s0top_rpi()
+    # Move servo 1
+    for angle in range(0,180,10):
+        servo_horiz.set_angle(angle)
+
+    stop_rpi()
+
